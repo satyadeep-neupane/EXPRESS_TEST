@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const DATABASE_URL = 'mongodb+srv://satyadeep:satyadeep@cluster0.tqm0iih.mongodb.net/?retryWrites=true&w=majority';
 
 app.use(express.json());
 
