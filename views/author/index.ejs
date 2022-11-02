@@ -1,0 +1,22 @@
+<h1>List Author</h1>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Image</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(const author of authors){ %>
+        <tr>
+          <th scope="row">1</th>
+          <td><%= author.name %></td>
+          <td><img src="<%= author.image %>"></td>
+          <td><a href="#" class="btn btn-danger">Delete</a></td>
+        </tr>
+        <% } %>
+    </tbody>    
+</table>
