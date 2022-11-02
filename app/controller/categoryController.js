@@ -1,19 +1,45 @@
-let categories = require('../model/model.category').categories;
+const Category = require('../model/model.category');
 
-exports.listCategories = (req, res) => {
-    res.status(200).json(categories);
+exports.store = async (req, res) => {
+    try{
+        const category = new Category({
+            name: req.body.name
+        });
+    
+        await category.save();
+        return res.send(category);
+    }catch(err){
+        return res.status(500).send({
+            message: err.message || "Some error occurred while creating the Category."
+        });
+    }
 }
 
-exports.createCategory = (req, res) => {
-    categories.push({
-        'id': req.body.id,
-        'name': req.body.name
-    })
-    res.status(200).send("Category added successfully");
+exports.list = async (req, res) => {
+    try{
+        const categories = await Category.find();
+        return res.send(categories);
+    }catch(err){
+        return res.status(500).send({
+            message: err.message || "Some error occurred while retrieving categories."
+        });
+    }
 }
 
-exports.deleteCategory = (req, res) => {
-    let id = Number(req.params.id);
-    categories = categories.filter(category => { if (category.id !== id) return category });
-    res.status(200).send("Category deleted successfully");
+exports.destroy = async (req, res) => {
+    try{
+        const category = await Category.findByIdAndRemove(req.params.id);
+        if(!category) res.status(404).send({message: "Category not found with id " + req.params.id});
+        return res.send({message: "Category deleted successfully!"});
+    }catch(err)
+    {
+        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+            return res.status(404).send({
+                message: "Category not found with id " + req.params.id
+            });                
+        }
+        return res.status(500).send({
+            message: "Could not delete category with id " + req.params.id
+        });
+    }
 }

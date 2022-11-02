@@ -1,31 +1,50 @@
-let book = require('../model/model.book');
+const Book = require('../model/model.book');
 
-exports.createBook = async (req, res) => {
-    try {
-        const newBook = new book({
-            name: req.body.name
+exports.store = async (req, res) => {
+    try{
+        const book = new Book({
+            title: req.body.title,
+            category_id: req.body.category_id,
+            author_id: req.body.author_id
         });
-        await newBook.save();
-        res.status(201).send("Book Created Successfully");
-    } catch (error) {
-        res.status(500).send(error);
+
+        await book.save();
+        return res.send(book);
+    }catch(err){
+        return res.status(500).send({
+            message: err.message || "Some error occurred while creating the Book."
+        });
     }
 }
 
-exports.listBooks = async (req, res) => {
-    try {
-        const books = await book.find();
-        res.status(200).json(books);
-    } catch (error) {
-        res.status(500).send(error);
+exports.list = async (req, res) => {
+    try{
+        const books = await Book.find()
+                        .populate('category_id', 'name')
+                        .populate('author_id', ['name', 'image']);
+                        
+        return res.send(books);
+    }catch(err){
+        return res.status(500).send({
+            message: err.message || "Some error occurred while retrieving books."
+        });
     }
-};
+}
 
-exports.deleteBook = async (req, res) => {
-    try {
-        await book.findByIdAndDelete(req.params.id);
-        res.status(200).send("Book Deleted Successfully");
-    } catch (error) {
-        res.status(500).send(error);
+exports.destroy = async (req, res) => {
+    try{
+        const book = await Book.findByIdAndRemove(req.params.id);
+        if(!book) res.status(404).send({message: "Book not found with id " + req.params.id});
+        return res.send({message: "Book deleted successfully!"});
+    }catch(err)
+    {
+        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+            return res.status(404).send({
+                message: "Book not found with id " + req.params.id
+            });                
+        }
+        return res.status(500).send({
+            message: "Could not delete book with id " + req.params.id
+        });
     }
 }
