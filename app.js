@@ -20,41 +20,23 @@ db.once('open', () => console.log('Connected to Database'));
 // mongoose.connect('mongodb://localhost:27017/library', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const logger = require('./app/middleware/logger');
-const categoryRoute = require('./app/routes/api/route.category');
-const authorRoute = require('./app/routes/api/route.author');
-const bookRoute = require('./app/routes/api/route.book');
+// api route
+const categoryApiRoute = require('./app/routes/api/route.category');
+const authorApiRoute = require('./app/routes/api/route.author');
+const bookApiRoute = require('./app/routes/api/route.book');
+
+//web route
+const authorRoute = require('./app/routes/web/route.author');
+
 
 app.use(logger)
-app.use('/api/category', categoryRoute);
-app.use('/api/author', authorRoute);
-app.use('/api/book', bookRoute);
+app.use('/api/category', categoryApiRoute);
+app.use('/api/author', authorApiRoute);
+app.use('/api/book', bookApiRoute);
 
 app.get('/category', (req, res) => {
     res.render('category/index');
 });
-
-app.get('/author', (req, res) => {
-    res.render('author/index', {
-        authors: [
-            {
-                "_id": "63624d1cf74f879a24a7d7f8",
-                "name": "Ram Khanal",
-                "image": "https://fakeimg.pl/300/",
-                "createdAt": "2022-11-02T10:57:32.328Z",
-                "updatedAt": "2022-11-02T10:57:32.328Z",
-                "__v": 0
-            },
-            {
-                "_id": "6362526437907062056a84e7",
-                "name": "Hari Sharma",
-                "image": "https://fakeimg.pl/300/",
-                "createdAt": "2022-11-02T11:20:04.422Z",
-                "updatedAt": "2022-11-02T11:20:04.422Z",
-                "__v": 0
-            }
-        ]
-    });
-});
-
+app.use('/author', authorRoute);
 
 app.listen(process.env.PORT, () => { console.log(`Server is running on port ${process.env.PORT}`) });
