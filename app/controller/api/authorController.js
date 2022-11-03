@@ -2,6 +2,7 @@ const Author = require('../../model/model.author');
 
 // Create and Save a new Author
 exports.store = async (req, res) => {
+    console.log(req.body);
     try{
         const author = new Author({
             name: req.body.name,

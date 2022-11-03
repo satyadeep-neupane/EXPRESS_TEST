@@ -1,5 +1,9 @@
 const Author = require('../../model/model.author');
 
+exports.create = async (req, res) => {
+    return res.render('author/create');
+}
+
 // Create and Save a new Author
 exports.store = async (req, res) => {
     try{
@@ -9,7 +13,7 @@ exports.store = async (req, res) => {
         });
     
         await author.save();
-        return res.send(author);
+        return res.redirect('/author');
     }catch(err){
         return res.status(500).send({
             message: err.message || "Some error occurred while creating the Author."
@@ -33,7 +37,7 @@ exports.destroy = async (req, res) => {
     try{
         const author = await Author.findByIdAndRemove(req.params.id);
         if(!author) res.status(404).send({message: "Author not found with id " + req.params.id});
-        return res.send({message: "Author deleted successfully!"});
+        return res.redirect('/author');
     }catch(err){
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
