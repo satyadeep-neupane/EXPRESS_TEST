@@ -20,9 +20,9 @@ db.once('open', () => console.log('Connected to Database'));
 // mongoose.connect('mongodb://localhost:27017/library', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const logger = require('./app/middleware/logger');
-const categoryRoute = require('./app/routes/route.category');
-const authorRoute = require('./app/routes/route.author');
-const bookRoute = require('./app/routes/route.book');
+const categoryRoute = require('./app/routes/api/route.category');
+const authorRoute = require('./app/routes/api/route.author');
+const bookRoute = require('./app/routes/api/route.book');
 
 app.use(logger)
 app.use('/api/category', categoryRoute);

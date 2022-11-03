@@ -1,4 +1,4 @@
-const Category = require('../model/model.category');
+const Category = require('../../model/model.category');
 
 exports.store = async (req, res) => {
     try{
