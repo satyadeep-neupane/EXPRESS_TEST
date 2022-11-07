@@ -24,8 +24,18 @@ exports.store = async (req, res) => {
 exports.list = async (req, res) => {
     try{
         const authors = await Author.find();
-        return res.render('author/index', {authors: authors});
-        // return res.send(authors);
+        return res.render('author', {authors: authors});
+    }catch(err){
+        return res.status(500).send({
+            message: err.message || "Some error occurred while retrieving authors."
+        });
+    }
+}
+
+exports.index = async (req, res) => {
+    try{
+        const authors = await Author.find();
+        return res.render('author/list', {authors: authors});
     }catch(err){
         return res.status(500).send({
             message: err.message || "Some error occurred while retrieving authors."

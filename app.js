@@ -29,6 +29,7 @@ const bookApiRoute = require('./app/routes/api/route.book');
 
 //web route
 const authorRoute = require('./app/routes/web/route.author');
+const bookRoute = require('./app/routes/web/route.book');
 
 
 app.use(logger)
@@ -40,5 +41,6 @@ app.get('/category', (req, res) => {
     res.render('category/index');
 });
 app.use('/author', authorRoute);
+app.use('/book', bookRoute);
 
 app.listen(process.env.PORT, () => { console.log(`Server is running on port ${process.env.PORT}`) });
